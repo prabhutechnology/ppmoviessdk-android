@@ -27,7 +27,7 @@ class MovieListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMovieListBinding.inflate(inflater, container, false)
-        binding.moviesList.layoutManager = GridLayoutManager(context, 2)
+        binding.recyclerViewMoviesList.layoutManager = GridLayoutManager(context, 2)
         binding.swipeRefresh.setOnRefreshListener { moviesViewModel.getMovieShows() }
         return binding.root
     }
@@ -37,13 +37,14 @@ class MovieListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         var movieListAdapter = MovieListAdapter(requireContext(), emptyList())
-        binding.moviesList.adapter = movieListAdapter
+        binding.recyclerViewMoviesList.adapter = movieListAdapter
         moviesViewModel.getMovieShows()
 
         viewLifecycleOwner.lifecycleScope.launch {
             moviesViewModel.movieShowsResponse.collectLatest { movieShows ->
                 when (movieShows) {
                     is MovieListEvent.Loading -> {
+                        binding.containerNoMovie.noMovieLayout.visibility = View.GONE
                         binding.swipeRefresh.isRefreshing = true
                         movieListAdapter.setLoading(true)
                         movieListAdapter.notifyDataSetChanged()
@@ -51,12 +52,14 @@ class MovieListFragment : Fragment() {
                     is MovieListEvent.Success -> {
                         movieListAdapter = MovieListAdapter(requireContext(), movieShows.movies)
                         movieListAdapter.notifyDataSetChanged()
-                        binding.moviesList.adapter = movieListAdapter
-                        binding.containerNoMovie.noMovieLayout.visibility.apply {
-                            if (movieShows.movies.isEmpty()) View.VISIBLE else View.GONE
+                        binding.recyclerViewMoviesList.adapter = movieListAdapter
+                        binding.containerNoMovie.noMovieLayout.apply {
+                            visibility =
+                                if (movieShows.movies.isEmpty()) View.VISIBLE else View.GONE
                         }
                     }
                     is MovieListEvent.Failure -> {
+                        binding.recyclerViewMoviesList.visibility = View.GONE
                         binding.containerNoMovie.noMovieLayout.visibility = View.VISIBLE
                         Log.e(
                             "MovieListEvent.Failure",

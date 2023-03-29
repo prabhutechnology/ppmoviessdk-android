@@ -2,15 +2,12 @@ package com.prabhutech.ppmoviessdk.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.prabhutech.ppmoviessdk.model.repository.MoviesRepository
 import com.prabhutech.ppmoviessdk.core.utils.DispatcherProvider
 import com.prabhutech.ppmoviessdk.core.utils.Resource
 import com.prabhutech.ppmoviessdk.usecase.MovieShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
