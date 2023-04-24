@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.prabhutech.ppmoviessdk.R
 import com.prabhutech.ppmoviessdk.databinding.ItemMovieBinding
 import com.prabhutech.ppmoviessdk.databinding.ItemMovieLoadingBinding
-import com.prabhutech.ppmoviessdk.model.model.Movie
+import com.prabhutech.ppmoviessdk.model.model.getMoviesShows.Movie
 
 class MovieListAdapter(
     private val context: Context,

@@ -15,4 +15,6 @@
     <string name="try_again">Please try again</string>
     <string name="network_error">Network error</string>
     <string name="try_again_later">Please try again, later</string>
+    <string name="cancel">Cancel</string>
+    <string name="okay">OK</string>
 </resources>

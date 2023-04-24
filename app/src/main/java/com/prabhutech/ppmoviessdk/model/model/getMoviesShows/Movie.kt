@@ -1,4 +1,4 @@
-package com.prabhutech.ppmoviessdk.model.model
+package com.prabhutech.ppmoviessdk.model.model.getMoviesShows
 
 import com.google.gson.annotations.SerializedName
 

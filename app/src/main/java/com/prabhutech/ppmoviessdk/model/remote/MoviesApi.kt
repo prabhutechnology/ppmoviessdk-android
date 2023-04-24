@@ -2,7 +2,7 @@ package com.prabhutech.ppmoviessdk.model.remote
 
 import com.prabhutech.ppmoviessdk.model.model.requestbody.MovieRequest
 import com.prabhutech.ppmoviessdk.model.model.responsebody.MovieShowTimeResponse
-import com.prabhutech.ppmoviessdk.model.model.responsebody.MovieShowsResponse
+import com.prabhutech.ppmoviessdk.model.model.getMoviesShows.MovieShowsResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

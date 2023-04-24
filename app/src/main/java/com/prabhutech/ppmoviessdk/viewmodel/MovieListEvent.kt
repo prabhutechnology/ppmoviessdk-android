@@ -1,7 +1,7 @@
 package com.prabhutech.ppmoviessdk.viewmodel
 
 import com.prabhutech.ppmoviessdk.core.utils.UiText
-import com.prabhutech.ppmoviessdk.model.model.Movie
+import com.prabhutech.ppmoviessdk.model.model.getMoviesShows.Movie
 
 sealed class MovieListEvent {
     object Loading : MovieListEvent()
