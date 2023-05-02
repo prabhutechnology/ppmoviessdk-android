@@ -18,4 +18,5 @@
     <string name="cancel">Cancel</string>
     <string name="okay">OK</string>
     <string name="retry_title">Retry</string>
+    <string name="movie_banner">Movie banner</string>
 </resources>

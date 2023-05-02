@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".view.MovieDetailFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_view_banner"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:contentDescription="@string/movie_banner"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="210dp"
+            android:background="@drawable/image_overlay"
+            android:importantForAccessibility="no"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/text_view_time"
+            app:layout_constraintEnd_toStartOf="@+id/btn_info"
+            app:layout_constraintStart_toStartOf="@id/image_view_banner"
+            tools:text="Movie title" />
+
+        <TextView
+            android:id="@+id/text_view_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/text_view_genre"
+            app:layout_constraintEnd_toStartOf="@+id/btn_info"
+            app:layout_constraintStart_toStartOf="@id/image_view_banner"
+            tools:text="Movie time" />
+
+        <TextView
+            android:id="@+id/text_view_genre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/image_view_banner"
+            app:layout_constraintEnd_toStartOf="@+id/btn_info"
+            app:layout_constraintStart_toStartOf="@id/image_view_banner"
+            tools:text="Movie Genre" />
+
+        <Button
+            android:id="@+id/btn_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/btn_shape_12"
+            android:backgroundTint="#FFC300"
+            android:minWidth="48dp"
+            android:paddingHorizontal="16dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:backgroundTint="#FFC300"
+            app:layout_constraintBottom_toBottomOf="@id/image_view_banner"
+            app:layout_constraintEnd_toEndOf="@id/image_view_banner"
+            tools:text="Info" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout_day_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image_view_banner"
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabMode="scrollable" />
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EEEEEE"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tab_layout_day_time" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager_movie_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_divider" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
