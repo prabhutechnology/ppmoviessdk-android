@@ -22,6 +22,12 @@ abstract class SafeApiCall {
                 when (e) {
                     is HttpException -> {
                         when (e.code()) {
+                            401 -> {
+                                Resource.Error(
+                                    errorTitle = UiText.DynamicString(value = e.message()),
+                                    message = UiText.DynamicString(value = e.response()!!.message())
+                                )
+                            }
                             404 -> {
                                 Resource.Error(
                                     errorTitle = UiText.StringResource(resId = R.string.service_unavailable),
