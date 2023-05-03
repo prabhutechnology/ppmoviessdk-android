@@ -12,7 +12,7 @@
         <action
             android:id="@+id/action_movie_list_to_detail"
             app:destination="@id/movieDetailFragment"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/movieDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"

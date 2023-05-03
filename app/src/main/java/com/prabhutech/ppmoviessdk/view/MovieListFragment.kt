@@ -2,7 +2,6 @@ package com.prabhutech.ppmoviessdk.view
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,28 +27,13 @@ class MovieListFragment : Fragment() {
     private val alertBoxBinding get() = _alertBoxBinding!!
 
     private val moviesViewModel: MovieViewModel by activityViewModels()
-    private var showErrorAlert: Dialog? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMovieListBinding.inflate(inflater, container, false)
-        binding.recyclerViewMoviesList.layoutManager = GridLayoutManager(context, 2)
-        binding.swipeRefresh.setOnRefreshListener { moviesViewModel.getMovieShows() }
-
-        val layoutInflater =
-            requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        _alertBoxBinding = AlertBoxBinding.inflate(layoutInflater)
-        showErrorAlert = Dialog(requireContext())
-        showErrorAlert?.apply {
+    private val showErrorAlert by lazy {
+        Dialog(requireContext()).apply {
             setContentView(alertBoxBinding.root)
             setCancelable(true)
             setCanceledOnTouchOutside(true)
             window?.setBackgroundDrawableResource(android.R.color.transparent)
         }
-
-        return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,15 +41,22 @@ class MovieListFragment : Fragment() {
         moviesViewModel.getMovieShows()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    @SuppressLint("notifyDataSetChanged")
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMovieListBinding.inflate(inflater, container, false)
+
+        binding.recyclerViewMoviesList.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.swipeRefresh.setOnRefreshListener { moviesViewModel.getMovieShows() }
+
+        _alertBoxBinding = AlertBoxBinding.inflate(inflater)
 
         var movieListAdapter = MovieListAdapter(requireContext(), "", emptyList())
         binding.recyclerViewMoviesList.adapter = movieListAdapter
-
         viewLifecycleOwner.lifecycleScope.launch {
-            moviesViewModel.movieShowsResponse.collectLatest { movieShows ->
+            moviesViewModel.movieShowsResponseTest.collectLatest { movieShows ->
                 when (movieShows) {
                     is MovieListEvent.Loading -> {
                         binding.recyclerViewMoviesList.visibility = View.VISIBLE
@@ -81,31 +72,32 @@ class MovieListFragment : Fragment() {
                             processId = movieShows.processId,
                             movies = movieShows.movies
                         )
-                        movieListAdapter.notifyDataSetChanged()
                         binding.recyclerViewMoviesList.adapter = movieListAdapter
                         binding.containerNoMovie.noMovieLayout.apply {
                             visibility =
                                 if (movieShows.movies.isEmpty()) View.VISIBLE else View.GONE
                         }
+
+                        binding.swipeRefresh.isRefreshing = false
+                        movieListAdapter.setLoading(false)
+                        movieListAdapter.notifyDataSetChanged()
                     }
 
                     is MovieListEvent.Failure -> {
                         alertBoxBinding.apply {
                             textViewTitle.text = movieShows.errorTitle.asString(requireContext())
                             textViewMessage.text = movieShows.message.asString(requireContext())
-                            btnCancel.setOnClickListener { showErrorAlert!!.dismiss() }
+                            btnCancel.setOnClickListener { showErrorAlert.dismiss() }
                             btnOk.text = getString(R.string.retry_title)
                             btnOk.setOnClickListener {
                                 moviesViewModel.getMovieShows()
-                                showErrorAlert!!.dismiss()
+                                showErrorAlert.dismiss()
                             }
                         }
-                        showErrorAlert!!.show()
+                        showErrorAlert.show()
                         binding.recyclerViewMoviesList.visibility = View.GONE
                         binding.containerNoMovie.noMovieLayout.visibility = View.VISIBLE
-                    }
 
-                    is MovieListEvent.Complete -> {
                         binding.swipeRefresh.isRefreshing = false
                         movieListAdapter.setLoading(false)
                         movieListAdapter.notifyDataSetChanged()
@@ -113,6 +105,8 @@ class MovieListFragment : Fragment() {
                 }
             }
         }
+
+        return binding.root
     }
 
     override fun onDestroyView() {
