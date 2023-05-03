@@ -79,15 +79,15 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
             android:background="@drawable/btn_shape_12"
-            android:backgroundTint="#FFC300"
             android:minWidth="48dp"
             android:paddingHorizontal="16dp"
+            android:text="@string/info"
+            android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="#FFC300"
             app:layout_constraintBottom_toBottomOf="@id/image_view_banner"
-            app:layout_constraintEnd_toEndOf="@id/image_view_banner"
-            tools:text="Info" />
+            app:layout_constraintEnd_toEndOf="@id/image_view_banner" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout_day_time"

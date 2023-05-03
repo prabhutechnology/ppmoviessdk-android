@@ -1,42 +1,45 @@
 package com.prabhutech.ppmoviessdk.usecase
 
-import com.prabhutech.ppmoviessdk.R
+import com.prabhutech.ppmoviessdk.core.constant.AppConstant.ERROR_MESSAGE
+import com.prabhutech.ppmoviessdk.core.constant.AppConstant.TRY_AGAIN_MESSAGE
 import com.prabhutech.ppmoviessdk.core.utils.Resource
 import com.prabhutech.ppmoviessdk.core.utils.UiText
-import com.prabhutech.ppmoviessdk.model.model.getMoviesShows.Movie
+import com.prabhutech.ppmoviessdk.model.model.getMoviesShows.MovieShowsData
 import com.prabhutech.ppmoviessdk.model.repository.MoviesRepository
 import javax.inject.Inject
 
 class MovieShowsUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository
 ) {
-    suspend operator fun invoke(token: String): Resource<List<Movie>> {
+    suspend operator fun invoke(token: String): Resource<MovieShowsData> {
         return when (val movieShowsResponse = moviesRepository.getMovieShows(token)) {
             is Resource.Success -> {
-                val response = movieShowsResponse.data!!
-                if (!response.isSuccessful) {
+                val response = movieShowsResponse.data
+                if (response == null || !response.isSuccessful) {
                     return Resource.Error(
-                        errorTitle = UiText.StringResource(R.string.something_went_wrong),
-                        message = UiText.DynamicString(response.message())
+                        errorTitle = ERROR_MESSAGE,
+                        message = UiText.DynamicString(response!!.message())
                     )
                 }
-                val result = response.body() ?: return Resource.Success(emptyList())
-                if (result.success) {
-                    Resource.Success(result.data.movies ?: emptyList())
-                } else {
-                    Resource.Error(
-                        errorTitle = UiText.StringResource(R.string.something_went_wrong),
-                        message = UiText.DynamicString(result.message)
-                    )
-                }
+                response.body()?.let {
+                    if (it.success) {
+                        Resource.Success(it.data)
+                    } else {
+                        Resource.Error(
+                            errorTitle = ERROR_MESSAGE,
+                            message = UiText.DynamicString(it.message)
+                        )
+                    }
+                } ?: Resource.Error(
+                    errorTitle = movieShowsResponse.errorTitle ?: ERROR_MESSAGE,
+                    message = movieShowsResponse.message ?: TRY_AGAIN_MESSAGE
+                )
             }
 
             is Resource.Error -> {
                 Resource.Error(
-                    errorTitle = movieShowsResponse.errorTitle
-                        ?: UiText.StringResource(R.string.something_went_wrong),
-                    message = movieShowsResponse.message
-                        ?: UiText.StringResource(R.string.something_went_wrong)
+                    errorTitle = movieShowsResponse.errorTitle ?: ERROR_MESSAGE,
+                    message = movieShowsResponse.message ?: TRY_AGAIN_MESSAGE
                 )
             }
         }

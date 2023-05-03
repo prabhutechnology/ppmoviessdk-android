@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">PPMoviesSDK</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_movie_found">No movie found</string>
     <string name="no_movie_available">There are no movie available now</string>
     <string name="go_back">Go back</string>
@@ -19,4 +17,5 @@
     <string name="okay">OK</string>
     <string name="retry_title">Retry</string>
     <string name="movie_banner">Movie banner</string>
+    <string name="info">Info</string>
 </resources>

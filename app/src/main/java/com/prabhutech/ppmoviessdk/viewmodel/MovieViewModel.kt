@@ -28,12 +28,17 @@ class MovieViewModel @Inject constructor(
                 movieShowsUseCase("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ODAxOTc5MDU4IiwianRpIjoiOTdjMjZhOTctODI5ZS00YzJjLThjMDAtYzc5ZGIzYzJmMWY4IiwiaWF0IjoxNjgyNDE5OTcyLCJJZCI6IjE3dkpUaGh4M2d3VDcvNjd1UnRraUxRSUVuSExVbEE4IiwiUm9sZSI6IkN1c3RvbWVyIiwibmJmIjoxNjgyMzMzNTcxLCJleHAiOjE2ODUwMTE5NzEsImlzcyI6IndlYkFwaSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC8ifQ.hMjR_KtFxjKXI6qJs9n6suV-YmqILU-0lPJ3bHAmd0I")) {
                 is Resource.Success -> {
                     val singleMovieList = mutableListOf<Movie>()
-                    for (movie in movieShowsResponse.data!!) {
-                        if (movie.ticketType.lowercase() == MULTIPLE_MOVIE_TYPE) {
+                    for (movie in movieShowsResponse.data!!.movies!!) {
+                        if (movie.ticketType!!.lowercase() == MULTIPLE_MOVIE_TYPE) {
                             singleMovieList.add(movie)
                         }
                     }
-                    _movieShowsResponse.emit(MovieListEvent.Success(singleMovieList))
+                    _movieShowsResponse.emit(
+                        MovieListEvent.Success(
+                            movieShowsResponse.data.processId ?: "",
+                            singleMovieList
+                        )
+                    )
                 }
 
                 is Resource.Error ->

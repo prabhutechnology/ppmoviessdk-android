@@ -52,8 +52,8 @@ class MovieListFragment : Fragment() {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         moviesViewModel.getMovieShows()
     }
 
@@ -61,7 +61,7 @@ class MovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var movieListAdapter = MovieListAdapter(requireContext(), emptyList())
+        var movieListAdapter = MovieListAdapter(requireContext(), "", emptyList())
         binding.recyclerViewMoviesList.adapter = movieListAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -76,7 +76,11 @@ class MovieListFragment : Fragment() {
                     }
 
                     is MovieListEvent.Success -> {
-                        movieListAdapter = MovieListAdapter(requireContext(), movieShows.movies)
+                        movieListAdapter = MovieListAdapter(
+                            context = requireContext(),
+                            processId = movieShows.processId,
+                            movies = movieShows.movies
+                        )
                         movieListAdapter.notifyDataSetChanged()
                         binding.recyclerViewMoviesList.adapter = movieListAdapter
                         binding.containerNoMovie.noMovieLayout.apply {
