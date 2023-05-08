@@ -54,7 +54,7 @@ class MovieListFragment : Fragment() {
         binding.recyclerViewMoviesList.adapter = movieListAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 moviesViewModel.movieShowsResponse.collectLatest { movieShows ->
                     when (movieShows) {
                         is MovieListEvent.Loading -> {

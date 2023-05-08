@@ -97,7 +97,7 @@ class MovieListAdapter(
                 val movieListArguments =
                     MovieListFragmentDirections.actionMovieListToDetail(
                         processId = processId,
-                        movieDetail = movies!![position]
+                        movieDetail = movies?.get(position)!!
                     )
                 NavigationRedirection.navigateToFragment(it, movieListArguments)
             }

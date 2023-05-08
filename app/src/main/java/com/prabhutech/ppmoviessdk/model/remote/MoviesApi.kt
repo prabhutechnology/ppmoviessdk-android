@@ -1,8 +1,8 @@
 package com.prabhutech.ppmoviessdk.model.remote
 
-import com.prabhutech.ppmoviessdk.model.model.requestbody.MovieRequest
 import com.prabhutech.ppmoviessdk.model.model.responsebody.MovieShowTimeResponse
 import com.prabhutech.ppmoviessdk.model.model.getMoviesShows.MovieShowsResponse
+import com.prabhutech.ppmoviessdk.model.model.requestbody.ShowTimeRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -26,6 +26,6 @@ interface MoviesApi {
     @POST(GET_MOVIE_SHOW_TIME)
     suspend fun getMovieShowTime(
         @Header("Authorization") token: String,
-        @Body requestBody: MovieRequest
+        @Body requestBody: ShowTimeRequest
     ): Response<MovieShowTimeResponse>
 }
