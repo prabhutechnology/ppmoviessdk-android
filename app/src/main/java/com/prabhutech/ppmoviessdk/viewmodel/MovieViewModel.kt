@@ -10,7 +10,9 @@ import com.prabhutech.ppmoviessdk.usecase.MovieShowTimeUseCase
 import com.prabhutech.ppmoviessdk.usecase.MovieShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,37 +27,32 @@ class MovieViewModel @Inject constructor(
 ) : ViewModel() {
     private var processId: String = ""
 
-    private val _movieShowsResponse = MutableSharedFlow<MovieListEvent>()
-    val movieShowsResponse = _movieShowsResponse.asSharedFlow()
+    private val _movieShowStateFlow = MutableStateFlow<MovieListEvent>(MovieListEvent.Loading)
+    val movieShowsStateFlow = _movieShowStateFlow.asStateFlow()
 
     private val _movieShowTimeResponse = MutableSharedFlow<ShowTimeEvent>()
     val movieShowTimeResponse = _movieShowTimeResponse.asSharedFlow()
 
     fun getMovieShows() {
         viewModelScope.launch(dispatcherProvider.io) {
-            _movieShowsResponse.emit(MovieListEvent.Loading)
             when (val movieShowsResponse = movieShowsUseCase(TOKEN)) {
                 is Resource.Success -> {
                     val movieList =
                         movieShowsResponse.data?.movies?.filter { it.ticketType?.lowercase() == MULTIPLE_MOVIE_TYPE }
                     processId = movieShowsResponse.data?.processId ?: ""
-                    _movieShowsResponse.emit(
-                        MovieListEvent.Success(
-                            processId,
-                            movieList ?: emptyList()
-                        )
+                    _movieShowStateFlow.emit(
+                        MovieListEvent.Success(processId, movieList ?: emptyList())
                     )
                 }
 
                 is Resource.Error ->
-                    _movieShowsResponse.emit(
+                    _movieShowStateFlow.emit(
                         MovieListEvent.Failure(
                             errorTitle = movieShowsResponse.errorTitle!!,
                             message = movieShowsResponse.message!!
                         )
                     )
             }
-            _movieShowsResponse.emit(MovieListEvent.Completed)
         }
     }
 
