@@ -80,7 +80,7 @@
             android:layout_marginVertical="8dp"
             android:background="@drawable/btn_shape_12"
             android:minWidth="48dp"
-            android:paddingHorizontal="16dp"
+            android:padding="8dp"
             android:text="@string/info"
             android:textColor="@color/black"
             android:textSize="12sp"

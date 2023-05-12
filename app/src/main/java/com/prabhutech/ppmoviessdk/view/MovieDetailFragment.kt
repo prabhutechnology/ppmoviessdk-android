@@ -3,9 +3,12 @@ package com.prabhutech.ppmoviessdk.view
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -13,12 +16,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
 import com.prabhutech.ppmoviessdk.databinding.FragmentMovieDetailBinding
 import com.prabhutech.ppmoviessdk.databinding.InfoBoxBinding
+import com.prabhutech.ppmoviessdk.view.adapter.MovieDayTimePagerAdapter
 import com.prabhutech.ppmoviessdk.viewmodel.MovieViewModel
 import com.prabhutech.ppmoviessdk.viewmodel.ShowTimeEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MovieDetailFragment : Fragment() {
     private var _binding: FragmentMovieDetailBinding? = null
@@ -82,17 +91,49 @@ class MovieDetailFragment : Fragment() {
                         }
 
                         is ShowTimeEvent.Success -> {
-                            //Change view
-//                            val movieShowTimeData = showTime.showTime
-//                            binding.textViewName.text = movieShowTimeData.movieName
-//                            binding.textViewTime.text = movieShowTimeData.duration
-//                            binding.textViewGenre.text = movieShowTimeData.genre
-//                            Glide.with(requireContext()).load(movieShowTimeData.banner)
-//                                .into(binding.imageViewBanner)
+                            binding.tabLayoutDayTime.removeAllTabs()
+                            for (date in showTime.showTime.movieDates) {
+                                var date1 = Date()
+                                val df = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+                                try {
+                                    date1 = df.parse(date.showDate)!!
+                                } catch (e: ParseException) {
+                                    e.printStackTrace()
+                                }
+                                val s =
+                                    SimpleDateFormat("MMM dd\nEEE", Locale.ENGLISH).format(date1)
+
+                                // increase font size of days
+                                val ss = SpannableString(s.uppercase(Locale.getDefault()))
+                                ss.setSpan(RelativeSizeSpan(1.2f), 7, 10, 0)
+                                binding.tabLayoutDayTime.addTab(
+                                    binding.tabLayoutDayTime.newTab().setText(ss)
+                                )
+                            }
+                            // View pager
+                            val moviesDaysListAdapter = MovieDayTimePagerAdapter(
+                                childFragmentManager,
+                                showTime.showTime.movieDates,
+                                showTime.showTime.processId,
+                                showTime.showTime.movieId
+                            )
+                            binding.viewPagerMovieList.adapter = moviesDaysListAdapter
+                            binding.viewPagerMovieList.addOnPageChangeListener(
+                                TabLayout.TabLayoutOnPageChangeListener(binding.tabLayoutDayTime)
+                            )
+                            binding.tabLayoutDayTime.addOnTabSelectedListener(
+                                TabLayout.ViewPagerOnTabSelectedListener(binding.viewPagerMovieList)
+                            )
                         }
 
                         is ShowTimeEvent.Failure -> {
                             //Show error
+                            Toast.makeText(
+                                requireContext(),
+                                showTime.message.asString(requireContext()),
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
                         }
 
                         is ShowTimeEvent.Completed -> {

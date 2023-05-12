@@ -91,6 +91,7 @@ class MovieListFragment : Fragment() {
                                 }
                                 btnOk.text = getString(R.string.retry_title)
                                 btnOk.setOnClickListener {
+                                    binding.swipeRefresh.isRefreshing = true
                                     moviesViewModel.getMovieShows()
                                     showErrorAlert!!.dismiss()
                                 }
@@ -106,11 +107,18 @@ class MovieListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (binding.swipeRefresh.isRefreshing) {
+            binding.swipeRefresh.isRefreshing = false
+        }
+    }
+
     @SuppressLint("notifyDataSetChanged")
     fun refreshAdapter(movieListAdapter: MovieListAdapter, isRefresh: Boolean) {
         binding.swipeRefresh.isRefreshing = isRefresh
         movieListAdapter.setLoading(isRefresh)
-//        movieListAdapter.notifyDataSetChanged()
+        movieListAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

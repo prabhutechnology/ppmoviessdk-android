@@ -25,5 +25,28 @@
         <argument
             android:name="movieDetail"
             app:argType="com.prabhutech.ppmoviessdk.model.model.getMoviesShows.Movie" />
+        <action
+            android:id="@+id/action_movieDetailFragment_to_bookSeatFragment"
+            app:destination="@id/bookSeatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDateSelectFragment"
+        android:name="com.prabhutech.ppmoviessdk.view.MovieDateSelectFragment"
+        android:label="fragment_movie_date_select"
+        tools:layout="@layout/fragment_movie_date_select" />
+    <fragment
+        android:id="@+id/bookSeatFragment"
+        android:name="com.prabhutech.ppmoviessdk.view.BookSeatFragment"
+        android:label="Book your seats"
+        tools:layout="@layout/fragment_book_seat">
+        <argument
+            android:name="show"
+            app:argType="com.prabhutech.ppmoviessdk.model.model.responsebody.MovieShow" />
+        <argument
+            android:name="processId"
+            app:argType="string" />
+        <argument
+            android:name="movieId"
+            app:argType="string" />
     </fragment>
 </navigation>
