@@ -14,3 +14,4 @@ pluginManagement {
 //}
 rootProject.name = "PPMoviesSDK"
 include ':app'
+include ':PPMoviesSDK'

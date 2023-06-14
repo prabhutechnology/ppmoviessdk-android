@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.prabhutech.ppmoviessdk.core.constant.AppConstant.MULTIPLE_MOVIE_TYPE
 import com.prabhutech.ppmoviessdk.core.utils.DispatcherProvider
 import com.prabhutech.ppmoviessdk.core.utils.Resource
+import com.prabhutech.ppmoviessdk.model.model.requestbody.SeatRequest
 import com.prabhutech.ppmoviessdk.model.model.requestbody.ShowTimeRequest
+import com.prabhutech.ppmoviessdk.usecase.MovieSeatLayoutUseCase
 import com.prabhutech.ppmoviessdk.usecase.MovieShowTimeUseCase
 import com.prabhutech.ppmoviessdk.usecase.MovieShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,15 +23,38 @@ private const val TOKEN =
 class MovieViewModel @Inject constructor(
     private val dispatcherProvider: DispatcherProvider,
     private val movieShowsUseCase: MovieShowsUseCase,
-    private val movieShowTimeUseCase: MovieShowTimeUseCase
+    private val movieShowTimeUseCase: MovieShowTimeUseCase,
+    private val movieSeatLayoutUseCase: MovieSeatLayoutUseCase
 ) : ViewModel() {
     private var processId: String = ""
 
     private val _movieShowStateFlow = MutableStateFlow<MovieListEvent>(MovieListEvent.Loading)
     val movieShowsStateFlow = _movieShowStateFlow.asStateFlow()
 
-    private val _movieShowTimeResponse = MutableSharedFlow<ShowTimeEvent>()
-    val movieShowTimeResponse = _movieShowTimeResponse.asSharedFlow()
+    private val _movieShowTimeResponse = MutableStateFlow<ShowTimeEvent>(ShowTimeEvent.Loading)
+    val movieShowTimeResponse = _movieShowTimeResponse.asStateFlow()
+
+    private val _seatLayoutResponse = MutableStateFlow<SeatLayoutEvent>(SeatLayoutEvent.Loading)
+    val seatLayoutResponse = _seatLayoutResponse.asStateFlow()
+
+    fun getSeatLayout(seatRequest: SeatRequest) {
+        viewModelScope.launch(dispatcherProvider.io) {
+            when (val seatLayoutResponse = movieSeatLayoutUseCase(TOKEN, seatRequest)) {
+                is Resource.Success -> {
+                    _seatLayoutResponse.emit(SeatLayoutEvent.Success(seatLayoutResponse.data!!))
+                }
+
+                is Resource.Error -> {
+                    _seatLayoutResponse.emit(
+                        SeatLayoutEvent.Failure(
+                            errorTitle = seatLayoutResponse.errorTitle!!,
+                            message = seatLayoutResponse.message!!
+                        )
+                    )
+                }
+            }
+        }
+    }
 
     fun getMovieShows() {
         viewModelScope.launch(dispatcherProvider.io) {
@@ -74,7 +97,6 @@ class MovieViewModel @Inject constructor(
                     )
                 )
             }
-            _movieShowTimeResponse.emit(ShowTimeEvent.Completed)
         }
     }
 }
