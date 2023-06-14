@@ -53,7 +53,7 @@ dependencies {
 
     // Architectural Components
     def life_cycle_version = "2.5.1"
-    implementation "androidx.activity:activity-ktx:1.7.1"
+    implementation "androidx.activity:activity-ktx:1.7.2"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$life_cycle_version"
 
     //Life cycle
@@ -62,7 +62,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$life_cycle_version"
 
     // Navigation components
-    def nav_version = "2.5.3"
+    def nav_version = "2.6.0"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
@@ -85,7 +85,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 
     //Shimmer
-    implementation 'com.facebook.shimmer:shimmer:0.4.0'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.15.1'
@@ -93,4 +93,6 @@ dependencies {
 
     //FlexBox
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+//    implementation 'com.github.prabhutechnology:ppmoviessdk-android:0.1.0'
 }
