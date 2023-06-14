@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">PPMoviesSDK</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_movie_found">No movie found</string>
     <string name="no_movie_available">There are no movie available now</string>
     <string name="go_back">Go back</string>
@@ -15,4 +13,40 @@
     <string name="try_again">Please try again</string>
     <string name="network_error">Network error</string>
     <string name="try_again_later">Please try again, later</string>
+    <string name="cancel">Cancel</string>
+    <string name="okay">OK</string>
+    <string name="retry_title">Retry</string>
+    <string name="movie_banner">Movie banner</string>
+    <string name="info">Info</string>
+    <string name="process_id_required">Process id is required</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title">Title</string>
+    <string name="date">Date</string>
+    <string name="divide">    |    </string>
+    <string name="time">Time</string>
+    <string name="runtime">Runtime</string>
+    <string name="g">G</string>
+    <string name="gold">Gold</string>
+    <string name="s">S</string>
+    <string name="silver">Silver</string>
+    <string name="p">P</string>
+    <string name="platinum">Platinum</string>
+    <string name="sp">SP</string>
+    <string name="special">Special</string>
+    <string name="b">B</string>
+    <string name="balcony">Balcony</string>
+    <string name="n">N</string>
+    <string name="normal">Normal</string>
+    <string name="mins_left_to_buy_tickets"> mins left to buy tickets</string>
+    <string name="screen">SCREEN</string>
+    <string name="available">Available</string>
+    <string name="selected">Selected</string>
+    <string name="booked">Booked</string>
+    <string name="sold_out">Sold Out</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="seats_selected">Seats Selected:</string>
+    <string name="rs">Rs.</string>
+    <string name="buy_tickets">Buy Tickets</string>
+    <string name="cashback_rs">CashBack: Rs.</string>
 </resources>

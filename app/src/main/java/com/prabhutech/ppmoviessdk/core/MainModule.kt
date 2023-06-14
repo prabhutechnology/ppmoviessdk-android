@@ -17,20 +17,16 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object MainModule {
-    @Singleton
     @Provides
     fun provideBaseUrl() = ApiConstant.BASE_URL
 
-    @Singleton
     @Provides
     fun provideGson(): Gson = GsonBuilder().setLenient().create()
 
-    @Singleton
     @Provides
     fun provideOkHTTPClient() = if (BuildConfig.DEBUG) {
         val loggingInterceptor = HttpLoggingInterceptor()
@@ -58,7 +54,6 @@ object MainModule {
             .build()
     } else OkHttpClient.Builder().build()
 
-    @Singleton
     @Provides
     fun provideRetrofit(baseUrl: String, okHttpClient: OkHttpClient, gson: Gson): Retrofit =
         Retrofit.Builder()
@@ -67,7 +62,6 @@ object MainModule {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
-    @Singleton
     @Provides
     fun provideDispatchers(): DispatcherProvider = object : DispatcherProvider {
         override val main: CoroutineDispatcher

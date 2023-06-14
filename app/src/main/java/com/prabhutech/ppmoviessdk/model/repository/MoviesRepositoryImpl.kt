@@ -1,12 +1,12 @@
 package com.prabhutech.ppmoviessdk.model.repository
 
-import com.prabhutech.ppmoviessdk.model.model.requestbody.MovieRequest
 import com.prabhutech.ppmoviessdk.model.model.responsebody.MovieShowTimeResponse
-import com.prabhutech.ppmoviessdk.model.model.responsebody.MovieShowsResponse
+import com.prabhutech.ppmoviessdk.model.model.getMoviesShows.MovieShowsResponse
 import com.prabhutech.ppmoviessdk.model.remote.MoviesApi
 import com.prabhutech.ppmoviessdk.core.utils.DispatcherProvider
 import com.prabhutech.ppmoviessdk.core.utils.Resource
 import com.prabhutech.ppmoviessdk.core.utils.SafeApiCall
+import com.prabhutech.ppmoviessdk.model.model.requestbody.ShowTimeRequest
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override suspend fun getMovieShowTime(
         token: String,
-        requestBody: MovieRequest
+        requestBody: ShowTimeRequest
     ): Resource<Response<MovieShowTimeResponse>> = safeApiCall(dispatcherProvider) {
         api.getMovieShowTime(token, requestBody)
     }

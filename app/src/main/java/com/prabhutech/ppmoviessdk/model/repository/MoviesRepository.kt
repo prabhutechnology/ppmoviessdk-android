@@ -1,9 +1,9 @@
 package com.prabhutech.ppmoviessdk.model.repository
 
-import com.prabhutech.ppmoviessdk.model.model.requestbody.MovieRequest
 import com.prabhutech.ppmoviessdk.model.model.responsebody.MovieShowTimeResponse
-import com.prabhutech.ppmoviessdk.model.model.responsebody.MovieShowsResponse
+import com.prabhutech.ppmoviessdk.model.model.getMoviesShows.MovieShowsResponse
 import com.prabhutech.ppmoviessdk.core.utils.Resource
+import com.prabhutech.ppmoviessdk.model.model.requestbody.ShowTimeRequest
 import retrofit2.Response
 
 interface MoviesRepository {
@@ -11,6 +11,6 @@ interface MoviesRepository {
 
     suspend fun getMovieShowTime(
         token: String,
-        requestBody: MovieRequest
+        requestBody: ShowTimeRequest
     ): Resource<Response<MovieShowTimeResponse>>
 }
